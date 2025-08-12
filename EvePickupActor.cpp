@@ -1,4 +1,6 @@
-﻿#include "EvePickupActor.h"
+#include "EvePickupActor.h"
+
+#include "EveDebugUtils.h"
 #include "Components/StaticMeshComponent.h"
 #include "Net/UnrealNetwork.h"
 #include "Kismet/GameplayStatics.h"
@@ -37,10 +39,7 @@ void AEvePickupActor::HandlePickup(AController* InstigatingController)
 void AEvePickupActor::Multicast_PlayPickupEffects_Implementation()
 {
 	// 在这里可以播放粒子、声音、震屏等（示例用日志和屏幕提示）
-	if (GEngine)
-	{
-		GEngine->AddOnScreenDebugMessage(-1, 30.f, FColor::Yellow, TEXT("[Multicast] Pickup: effect (multicast)"));
-	}
+	UEveDebugUtils::Log(-1, 30.f, FColor::Yellow, TEXT("[Multicast] Pickup: effect (multicast)"));
 
 	// 例如：
 	// UGameplayStatics::SpawnEmitterAtLocation(this, PickupFX, GetActorLocation());

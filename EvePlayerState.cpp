@@ -1,4 +1,6 @@
-﻿#include "EvePlayerState.h"
+#include "EvePlayerState.h"
+
+#include "EveDebugUtils.h"
 #include "Net/UnrealNetwork.h"
 #include "Engine/Engine.h"
 
@@ -7,16 +9,6 @@ AEvePlayerState::AEvePlayerState()
 	Point = 0;
 	bReplicates = true;
 }
-
-// void AEvePlayerState::OnRep_Point()
-// {
-// 	// 在客户端执行：更新 HUD / 显示提示
-// 	if (GEngine)
-// 	{
-// 		GEngine->AddOnScreenDebugMessage(-1, 30.f, FColor::Green,
-// 			FString::Printf(TEXT("[Client OnRep] %s score updated: %d"), *GetPlayerName(), Point));
-// 	}
-// }
 
 void AEvePlayerState::OnRep_Point()
 {
@@ -34,9 +26,8 @@ void AEvePlayerState::OnRep_Point()
 			RoleTag = TEXT("[Client]"); // 纯客户端
 		}
 
-		// 保留原有 [Client OnRep] 标记，新增角色前缀
 		FString LogStr = FString::Printf(TEXT("%s [Client OnRep] %s score updated: %d"), *RoleTag, *GetPlayerName(), Point);
-		GEngine->AddOnScreenDebugMessage(-1, 30.f, FColor::Green, LogStr);
+		UEveDebugUtils::Log(-1, 30.f, FColor::Green, LogStr);
 	}
 }
 

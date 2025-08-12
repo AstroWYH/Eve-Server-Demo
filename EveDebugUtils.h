@@ -1,4 +1,4 @@
-﻿#pragma once
+#pragma once
 
 #include "CoreMinimal.h"
 #include "Kismet/BlueprintFunctionLibrary.h"
@@ -19,7 +19,6 @@ public:
 	 * @param DebugPrefix 日志前缀（如[Server]、[Client]）
 	 */
 	UFUNCTION(BlueprintCallable, Category = "Eve|Debug")
-	static void Log(int32 Key, float TimeToDisplay, FColor DisplayColor, const FString& DebugMessage, const FString& DebugPrefix);
-	
+	static void Log(int32 Key, float TimeToDisplay, FColor DisplayColor, const FString& DebugMessage);
 	
 };

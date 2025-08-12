@@ -1,6 +1,8 @@
-﻿// Fill out your copyright notice in the Description page of Project Settings.
+// Fill out your copyright notice in the Description page of Project Settings.
 
 #include "EveGameStateBase.h"
+
+#include "EveDebugUtils.h"
 
 void AEveGameStateBase::Multicast_BroadcastChat_Implementation(const FString& From, const FString& Message)
 {
@@ -11,10 +13,5 @@ void AEveGameStateBase::Multicast_BroadcastChat_Implementation(const FString& Fr
 
 	const FString Full = FString::Printf(TEXT("[Multicast] [%s]: %s"), *From, *Message);
 	
-	if (GEngine)
-	{
-		GEngine->AddOnScreenDebugMessage(-1, 30.f, FColor::Cyan, Full);
-	}
-
-	UE_LOG(LogTemp, Log, TEXT("%s"), *Full);
+	UEveDebugUtils::Log(-1, 30.f, FColor::Cyan, Full);
 }

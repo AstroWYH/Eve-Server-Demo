@@ -1,7 +1,8 @@
-﻿#include "EvePlayerController.h"
+#include "EvePlayerController.h"
 #include "EvePickupActor.h"
 #include "Engine/World.h"
 #include "DrawDebugHelpers.h"
+#include "EveDebugUtils.h"
 #include "Kismet/GameplayStatics.h"
 #include "EveGameStateBase.h"
 #include "EvePlayerState.h"
@@ -50,10 +51,7 @@ void AEvePlayerController::Server_TryPickup_Implementation(AEvePickupActor* Pick
 	if (!HasAuthority()) return;
 	if (!Pickup) return;
 	
-	if (GEngine)
-	{
-		GEngine->AddOnScreenDebugMessage(-1, 30.f, FColor::Blue, FString::Printf(TEXT("[RPC server] %s: pick up request"), *PlayerState->GetPlayerName()));
-	}
+	UEveDebugUtils::Log(-1, 30.f, FColor::Blue, FString::Printf(TEXT("[RPC server] %s: pick up request"), *PlayerState->GetPlayerName()));
 
 	APawn* EvePawn = GetPawn();
 	if (!EvePawn) return;
@@ -77,14 +75,6 @@ void AEvePlayerController::Server_TryPickup_Implementation(AEvePickupActor* Pick
 	}
 }
 
-// void AEvePlayerController::Client_NotifyPickup_Implementation(int32 NewScore)
-// {
-// 	if (GEngine)
-// 	{
-// 		GEngine->AddOnScreenDebugMessage(-1, 30.f, FColor::Blue, FString::Printf(TEXT("[RPC client] %s: score updated: %d"), *PlayerState->GetPlayerName(), NewScore));
-// 	}
-// }
-
 void AEvePlayerController::Client_NotifyPickup_Implementation(int32 NewScore)
 {
 	if (GEngine)
@@ -100,10 +90,9 @@ void AEvePlayerController::Client_NotifyPickup_Implementation(int32 NewScore)
 			RoleTag = TEXT("[Client]"); // 纯客户端
 		}
 
-		// 保留原有 [RPC client] 标记，新增角色前缀
 		FString LogStr = FString::Printf(TEXT("%s [RPC client] %s: score updated: %d"), 
 			*RoleTag, *PlayerState->GetPlayerName(), NewScore);
-		GEngine->AddOnScreenDebugMessage(-1, 30.f, FColor::Blue, LogStr);
+		UEveDebugUtils::Log(-1, 30.f, FColor::Blue, LogStr);
 	}
 }
 
@@ -114,10 +103,7 @@ void AEvePlayerController::Server_SendChatMessage_Implementation(const FString& 
 	AEveGameStateBase* GS = GetWorld() ? GetWorld()->GetGameState<AEveGameStateBase>() : nullptr;
 	FString Sender = PlayerState ? PlayerState->GetPlayerName() : TEXT("Unknown");
 
-	if (GEngine)
-	{
-		GEngine->AddOnScreenDebugMessage(-1, 30.f, FColor::Blue, FString::Printf(TEXT("[RPC server] %s: send chat msg request"), *PlayerState->GetPlayerName()));
-	}
+	UEveDebugUtils::Log(-1, 30.f, FColor::Blue, FString::Printf(TEXT("[RPC server] %s: send chat msg request"), *PlayerState->GetPlayerName()));
 	
 	if (GS)
 	{
